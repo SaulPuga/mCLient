@@ -19,4 +19,9 @@ public class DepositoController {
     public ResponseEntity<DepositoModel> deposito(@RequestBody DepositoRequestModel depositoRequestModel) throws Exception {
         return ResponseEntity.ok(this.depositoService.deposito(depositoRequestModel));
     }
+
+    @PostMapping("/retiros")
+    public ResponseEntity<DepositoModel> retiro(@RequestBody DepositoRequestModel depositoRequestModel) throws Exception {
+        return ResponseEntity.ok(this.depositoService.retiro(depositoRequestModel));
+    }
 }

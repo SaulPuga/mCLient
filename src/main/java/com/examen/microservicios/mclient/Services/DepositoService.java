@@ -36,4 +36,29 @@ public class DepositoService {
     }
         return depositoModel;
     }
+
+    public DepositoModel retiro(DepositoRequestModel depositoRequestModel) throws Exception {
+        DepositoModel depositoModel = new DepositoModel();
+
+        for (CuentaModel cuenta : cuentaService.getCuentas()) {
+            if (cuenta.getNumeroCuenta().equals(depositoRequestModel.getNumeroCuenta())) {
+                if (cuenta.isActiva()) {
+                    if (depositoRequestModel.getMonto() <= cuenta.getSaldoInicial()) {
+                        depositoModel.setNumeroCuenta(cuenta.getNumeroCuenta());
+                        depositoModel.setSaldoAnterior(cuenta.getSaldoInicial());
+                        depositoModel.setSaldoNuevo(cuenta.getSaldoInicial() - depositoRequestModel.getMonto());
+                        depositoModel.setOperacion("RETIRO");
+                        depositoModel.setMensaje("RETIRO REALIZADO CON EXITO");
+                    } else {
+                        throw new Exception("El saldo es insuficiente, seleccione otra cantidad");
+                    }
+                } else {
+                    throw new Exception("La cuenta esta desactivada");
+                }
+            }else{
+                throw new Exception("El numero de cuenta no es valido, revisar");
+            }
+        }
+        return depositoModel;
+    }
 }
