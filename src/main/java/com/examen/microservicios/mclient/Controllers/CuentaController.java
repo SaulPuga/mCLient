@@ -22,11 +22,29 @@ public class CuentaController {
     }
 
     @GetMapping(path= "/cuenta/{id}")
-    public ResponseEntity<Object> getUserbyId(@PathVariable("id") Long id){
-        if(cuentaService.getByParam(id).isPresent()){
-            return ResponseEntity.ok(this.cuentaService.getByParam(id));
+    public ResponseEntity<Object> getCuentabyId(@PathVariable("id") Long id){
+        if(cuentaService.getByid(id).isPresent()){
+            return ResponseEntity.ok(this.cuentaService.getByid(id));
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(path= "/cuenta/type/{tipoCuenta}")
+    public ResponseEntity<Object> getCuentabyType(@PathVariable("tipoCuenta") String type){
+        if(cuentaService.getByParam(type).isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else{
+            return ResponseEntity.ok(this.cuentaService.getByParam(type));
+        }
+    }
+
+    @GetMapping(path= "/cuenta/status/{status}")
+    public ResponseEntity<Object> getCuentabyStatus(@PathVariable("status") boolean status){
+        if(cuentaService.getByStatus(status).isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else{
+            return ResponseEntity.ok(this.cuentaService.getByStatus(status));
         }
     }
 }

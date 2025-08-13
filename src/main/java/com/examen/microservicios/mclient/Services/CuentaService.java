@@ -6,9 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +28,36 @@ public class CuentaService {
         }
     }
 
-    public Optional<CuentaModel> getByParam(Long id) {
+    public Optional<CuentaModel> getByid(Long id) {
         return cuentaRepository.findById(id);
+    }
+
+    public ArrayList<CuentaModel> getCuentas() {
+        return (ArrayList<CuentaModel>) cuentaRepository.findAll();
+    }
+
+    public List<CuentaModel> getByParam(String param) {
+        getCuentas();
+        ArrayList<CuentaModel> cuentassEncontradas = new ArrayList<>();
+
+        for (CuentaModel cuenta : getCuentas()) {
+            if (cuenta.getTipoCuenta().equals(param)) {
+                cuentassEncontradas.add(cuenta);
+            }
+        }
+        return cuentassEncontradas;
+    }
+
+    public List<CuentaModel> getByStatus(boolean status) {
+        getCuentas();
+        ArrayList<CuentaModel> cuentassEncontradas = new ArrayList<>();
+
+        for (CuentaModel cuenta : getCuentas()) {
+            if (cuenta.isActiva() == status) {
+                cuentassEncontradas.add(cuenta);
+            }
+        }
+        return cuentassEncontradas;
     }
 
     public String validarCuenta(String numeroCuenta) {
